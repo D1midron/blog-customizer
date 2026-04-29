@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { ArrowButton } from 'src/ui/arrow-button';
 import { Button } from 'src/ui/button';
 import { Select } from 'src/ui/select';
@@ -16,6 +16,7 @@ import {
 import { Separator } from 'src/ui/separator';
 
 import clsx from 'clsx';
+import { useOutsideClickClose } from 'src/ui/select/hooks/useOutsideClickClose';
 type ArticleParamsFormProps = {
 	setArticleState: (state: ArticleStateType) => void;
 };
@@ -34,6 +35,13 @@ export const ArticleParamsForm = ({
 			document.body.style.overflow = 'auto';
 		};
 	}, [isMenuOpen]);
+	const formRef = useRef<HTMLDivElement>(null);
+
+	useOutsideClickClose({
+		isOpen: isMenuOpen,
+		rootRef: formRef,
+		onChange: setIsMenuOpen,
+	});
 
 	const toggleMenu = () => {
 		setIsMenuOpen(!isMenuOpen);
